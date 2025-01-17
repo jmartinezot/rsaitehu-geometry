@@ -1,0 +1,9 @@
+numpy>=1.22.0
+scipy>=1.9.3
+Sphinx>=4.3.2
+sphinx-automodapi>=0.14.1
+sphinx-rtd-theme>=1.1.1
+rsaitehu-geometry>=0.0.1
+
+
+
