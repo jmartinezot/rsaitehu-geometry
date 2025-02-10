@@ -209,7 +209,7 @@ def get_distance_from_points_to_plane(points: Union[Tuple[float, float, float], 
     Calculate the perpendicular distance(s) from one or more points to a plane in 3D space.
 
     The plane is defined by the equation Ax + By + Cz + D = 0, and the distance is computed
-    using the formula: |Ax + By + Cz + D| / sqrt(A^2 + B^2 + C^2).
+    using the formula: \|Ax + By + Cz + D\| / sqrt(A^2 + B^2 + C^2).
 
     :param points: A single point as a tuple (x, y, z) or an array of points with shape (N, 3).
     :type points: Union[Tuple[float, float, float], np.ndarray]
@@ -734,7 +734,7 @@ def get_angle_between_vectors(v1: List[float], v2: List[float]) -> float:
     Calculate the angle between two vectors in radians.
 
     The angle is computed using the dot product formula:
-    angle = arccos((v1 • v2) / (|v1| * |v2|)).
+    angle = arccos((v1 • v2) / (\|v1\| * \|v2\|)).
 
     :param v1: A list representing the first vector [x, y, z].
     :type v1: List[float]
@@ -835,4 +835,61 @@ def get_centroid_of_points(points: np.ndarray) -> np.ndarray:
 
     return np.mean(points, axis=0)
 
+def get_angle_between_planes(plane1: np.ndarray, plane2: np.ndarray) -> float:
+    """
+    Calculate the acute angle between two planes in 3D space in radians.
+
+    Each plane is represented by a numpy array [A, B, C, D] corresponding to the
+    plane equation Ax + By + Cz + D = 0. The angle between the planes is defined
+    as the angle between their normal vectors. Since a normal vector can be reversed
+    without changing the plane, the acute angle is returned.
+
+    :param plane1: A numpy array [A, B, C, D] representing the first plane.
+    :type plane1: np.ndarray
+    :param plane2: A numpy array [A, B, C, D] representing the second plane.
+    :type plane2: np.ndarray
+    :return: The acute angle between the two planes in radians.
+    :rtype: float
+
+    :raises ValueError: If either plane is not a numpy array of shape (4,) or if a plane's normal vector is zero.
+
+    :Example:
+
+    ::
+
+        >>> import numpy as np
+        >>> plane1 = np.array([0, 0, 1, -3])  # Plane: z = 3
+        >>> plane2 = np.array([0, 1, 1, -4])  # Some inclined plane
+        >>> angle = get_angle_between_planes(plane1, plane2)
+        >>> angle
+        0.7853981633974483  # Approximately 45 degrees in radians
+    """
+    if plane1.shape != (4,):
+        raise ValueError("plane1 must be a numpy array with shape (4,), representing [A, B, C, D].")
+    if plane2.shape != (4,):
+        raise ValueError("plane2 must be a numpy array with shape (4,), representing [A, B, C, D].")
+
+    # Extract normal vectors from the plane equations
+    normal1 = plane1[:3]
+    normal2 = plane2[:3]
+
+    norm1 = np.linalg.norm(normal1)
+    norm2 = np.linalg.norm(normal2)
+
+    if norm1 == 0 or norm2 == 0:
+        raise ValueError("The normal vector of a plane cannot be the zero vector.")
+
+    # Compute the dot product of the normals
+    dot_product = np.dot(normal1, normal2)
+
+    # Compute the acute angle between the two normals (and hence the planes)
+    # Use absolute value to always get the acute angle
+    cosine_angle = abs(dot_product) / (norm1 * norm2)
+
+    # Clip cosine_angle to avoid numerical issues outside the range [-1, 1]
+    cosine_angle = np.clip(cosine_angle, -1.0, 1.0)
+
+    angle = np.arccos(cosine_angle)
+
+    return angle
 

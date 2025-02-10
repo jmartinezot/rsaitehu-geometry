@@ -8,11 +8,12 @@
 
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../../rsaitehu_pointcloud'))
+sys.path.insert(0, os.path.abspath('../../rsaitehu_geometry'))
 
-project = 'rsaitehu_pointcloud'
-copyright = '2024, José María Martínez-Otzeta'
-author = 'José María Martínez-Otzeta'
+
+project = 'rsaitehu-geometry'
+copyright = '2025, José María Martínez Otzeta'
+author = 'José María Martínez Otzeta'
 release = '0.0.1'
 
 # -- General configuration ---------------------------------------------------
@@ -26,7 +27,6 @@ extensions = [
     'sphinx.ext.autosummary',
     #'sphinx.ext.todo', 'sphinx.ext.viewcode', 'sphinx.ext.autodoc', 'sphinx.ext.imgmath', 'sphinx_automodapi.automodapi', 'sphinx.ext.ifconfig'
 ]
-
 
 templates_path = ['_templates']
 exclude_patterns = []
@@ -48,4 +48,3 @@ autosummary_generate = True
 autodoc_docstring_signature = True
 autodoc_member_order = "bysource"
 autodoc_inherit_docstrings = True
-

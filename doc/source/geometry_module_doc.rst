@@ -51,8 +51,7 @@ Core Functionalities
 2. **Graph and Plotting Limits:**
 
    - **Graph Limits:**
-     - Function: `get_limits_of_graph_from_limits_of_object(min_x: float, max_x: float, min_y: float, max_y: float, min_z: Union[float, None] = None, max_z: Union[float, None] = None
-) -> Union[Tuple[float, float, float, float], Tuple[float, float, float, float, float, float]]:)`
+     - Function: `get_limits_of_graph_from_limits_of_object(min_x: float, max_x: float, min_y: float, max_y: float, min_z: Union[float, None] = None, max_z: Union[float, None] = None) -> Union[Tuple[float, float, float, float], Tuple[float, float, float, float, float, float]]:)`
      - Description: Computes graph limits to ensure visibility of a 2D or 3D object centered at the origin.
 
 3. **Geometric Shapes:**

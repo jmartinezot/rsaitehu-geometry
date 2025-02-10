@@ -16,4 +16,5 @@ from .main import get_best_plane_from_points_from_two_segments
 from .main import get_point_of_plane_closest_to_given_point
 from .main import get_centroid_of_points
 from .main import get_a_polygon_from_plane_equation_and_point
+from .main import get_angle_between_planes
 

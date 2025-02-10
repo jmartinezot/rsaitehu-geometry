@@ -8,13 +8,10 @@ Module Reference
       
       get_plane_from_list_of_three_points
       get_limits_of_graph_from_limits_of_object
-      get_limits_of_3d_graph_from_limits_of_object
-      get_parallelogram_2d_vertices
-      get_parallelepiped_3d_vertices
-      get_parallelogram_3d_vertices
+      get_parallelogram_vertices
+      get_parallelepiped_vertices
       get_plane_equation
       find_closest_plane
-      get_distance_from_point_to_plane
       get_distance_from_points_to_plane
       fit_plane_svd
       get_angle_between_vectors
