@@ -19,11 +19,18 @@ def get_plane_from_list_of_three_points(points: List[List[float]]) -> Union[np.n
 
     :Example:
 
-    ::
+    .. literalinclude:: ../../rsaitehu_geometry/examples/example_get_plane_from_list_of_three_points.py
+       :language: python
+       :linenos:
+       :caption: Interactive Example from example_get_plane_from_list_of_three_points.py
 
-        >>> import numpy as np
+    Automated test:
+
+    .. doctest::
+
+        >>> import rsaitehu_geometry as geom
         >>> points = [[0, 0, 0], [1, 0, 0], [0, 1, 0]]
-        >>> plane = get_plane_from_list_of_three_points(points)
+        >>> plane = geom.get_plane_from_list_of_three_points(points)
         >>> plane
         array([0., 0., 1., 0.])
     """
@@ -70,13 +77,20 @@ def find_closest_plane(points: List[List[float]]) -> Tuple[float, float, float, 
 
     :Example:
 
-    ::
+    .. literalinclude:: ../../rsaitehu_geometry/examples/example_find_closest_plane.py
+       :language: python
+       :linenos:
+       :caption: Interactive Example from example_find_closest_plane.py
 
-        >>> import numpy as np
+    Automated test:
+
+    .. doctest::
+
+        >>> import rsaitehu_geometry as geom
         >>> points = [[1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 1, 1]]
-        >>> plane = find_closest_plane(points)
+        >>> plane = geom.find_closest_plane(points)
         >>> plane
-        (0.577, 0.577, 0.577, -1.732)  # Example coefficients
+        (-0.0, -1.0, -0.0, 0.5)
     """
     if len(points) < 3:
         raise ValueError("At least three points are required to define a plane.")
@@ -122,14 +136,22 @@ def get_point_of_plane_closest_to_given_point(plane: np.ndarray, point: np.ndarr
 
     :Example:
 
-    ::
+    .. literalinclude:: ../../rsaitehu_geometry/examples/example_get_point_of_plane_closest_to_given_point.py
+       :language: python
+       :linenos:
+       :caption: Interactive Example from example_get_point_of_plane_closest_to_given_point.py
 
+    Automated test:
+
+    .. doctest::
+
+        >>> import rsaitehu_geometry as geom
         >>> import numpy as np
         >>> plane = np.array([0, 0, 1, -5])  # z = 5 plane
         >>> point = np.array([1, 2, 3])
-        >>> closest_point = get_point_of_plane_closest_to_given_point(plane, point)
+        >>> closest_point = geom.get_point_of_plane_closest_to_given_point(plane, point)
         >>> closest_point
-        array([1., 2., 5.])  # Closest point lies on z = 5
+        array([1., 2., 5.])
     """
     if plane.shape != (4,):
         raise ValueError("Plane must be a numpy array with exactly 4 coefficients [A, B, C, D].")
@@ -169,13 +191,21 @@ def get_plane_equation(normal1: List[float], normal2: List[float], point: List[f
 
     :Example:
 
-    ::
+    .. literalinclude:: ../../rsaitehu_geometry/examples/example_get_plane_equation.py
+       :language: python
+       :linenos:
+       :caption: Interactive Example from example_get_plane_equation.py
 
+    Automated test:
+
+    .. doctest::
+
+        >>> import rsaitehu_geometry as geom
         >>> normal1 = [1, 0, 0]
         >>> normal2 = [0, 1, 0]
         >>> point = [0, 0, 1]
-        >>> get_plane_equation(normal1, normal2, point)
-        (0.0, 0.0, 1.0, -1.0)  # z = 1 plane
+        >>> geom.get_plane_equation(normal1, normal2, point)
+        (0.0, 0.0, 1.0, -1.0)
     """
     normal1 = np.array(normal1, dtype=float)
     normal2 = np.array(normal2, dtype=float)
@@ -223,20 +253,27 @@ def get_distance_from_points_to_plane(points: Union[Tuple[float, float, float], 
 
     :Example:
 
-    ::
+    .. literalinclude:: ../../rsaitehu_geometry/examples/example_get_distance_from_points_to_plane.py
+       :language: python
+       :linenos:
+       :caption: Interactive Example from example_get_distance_from_points_to_plane.py
 
+    Automated test:
+
+    .. doctest::
+
+        >>> import rsaitehu_geometry as geom
         >>> # Single point example
         >>> point = (1, 2, 3)
         >>> plane = (1, -1, 1, -10)  # Plane: x - y + z - 10 = 0
-        >>> distance = get_distance_from_points_to_plane(point, plane)
+        >>> distance = geom.get_distance_from_points_to_plane(point, plane)
         >>> distance
-        6.557438524302
-
+        4.618802153517007
         >>> # Multiple points example
         >>> points = np.array([[1, 2, 3], [4, 5, 6]])
-        >>> distance = get_distance_from_points_to_plane(points, plane)
+        >>> distance = geom.get_distance_from_points_to_plane(points, plane)
         >>> distance
-        array([6.55743852, 0.        ])
+        array([4.61880215, 2.88675135])
     """
     A, B, C, D = plane
 
@@ -276,12 +313,20 @@ def fit_plane_svd(points: np.ndarray) -> Tuple[float, float, float, float, float
 
     :Example:
 
-    ::
+    .. literalinclude:: ../../rsaitehu_geometry/examples/example_fit_plane_svd.py
+       :language: python
+       :linenos:
+       :caption: Interactive Example from example_fit_plane_svd.py
 
+    Automated test:
+
+    .. doctest::
+
+        >>> import rsaitehu_geometry as geom
         >>> import numpy as np
         >>> points = np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 1, 1]])
-        >>> fit_plane_svd(points)
-        (0.577, 0.577, 0.577, -1.732, 0.0)
+        >>> geom.fit_plane_svd(points)
+        (-0.0, -1.0, -0.0, 0.5, 1.0)
     """
     if points.ndim != 2 or points.shape[1] != 3:
         raise ValueError("Input points must be a numpy array of shape (N, 3), where N is the number of points.")
@@ -325,19 +370,27 @@ def get_intersection_point_of_line_with_plane(line: np.ndarray, plane: np.ndarra
 
     :Example:
 
-    ::
-
-        >>> import numpy as np
-        >>> line = np.array([[0, 0, 0], [1, 1, 1]])
-        >>> plane = np.array([0, 0, 1, -3])  # Plane: z = 3
-        >>> intersection_point = get_intersection_point_of_line_with_plane(line, plane)
-        >>> intersection_point
-        array([3., 3., 3.])
+    .. literalinclude:: ../../rsaitehu_geometry/examples/example_get_intersection_point_of_line_with_plane.py
+       :language: python
+       :linenos:
+       :caption: Interactive Example from example_get_intersection_point_of_line_with_plane.py
 
     |drawing_draw_line_extension_to_plane_example|
 
     .. |drawing_draw_line_extension_to_plane_example| image:: ../../doc/source/_static/images/drawing_draw_line_extension_to_plane_example.png
 
+
+    Automated test:
+
+    .. doctest::
+
+        >>> import rsaitehu_geometry as geom
+        >>> import numpy as np
+        >>> line = np.array([[0, 0, 0], [1, 1, 1]])
+        >>> plane = np.array([0, 0, 1, -3])  # Plane: z = 3
+        >>> intersection_point = geom.get_intersection_point_of_line_with_plane(line, plane)
+        >>> intersection_point
+        array([3., 3., 3.])
     '''
     if line.shape != (2, 3):
         raise ValueError("Line must be a numpy array with shape (2, 3), representing two points in 3D space.")
@@ -379,15 +432,23 @@ def get_two_perpendicular_unit_vectors_in_plane(plane: np.ndarray) -> Tuple[np.n
 
     :Example:
 
-    ::
+    .. literalinclude:: ../../rsaitehu_geometry/examples/example_get_two_perpendicular_unit_vectors_in_plane.py
+       :language: python
+       :linenos:
+       :caption: Interactive Example from example_get_two_perpendicular_unit_vectors_in_plane.py
 
+    Automated test:
+
+    .. doctest::
+
+        >>> import rsaitehu_geometry as geom
         >>> import numpy as np
         >>> plane = np.array([0, 0, 1, -3])  # Plane: z = 3
-        >>> perpendicular1, perpendicular2 = get_two_perpendicular_unit_vectors_in_plane(plane)
+        >>> perpendicular1, perpendicular2 = geom.get_two_perpendicular_unit_vectors_in_plane(plane)
         >>> perpendicular1
-        array([0., 1., 0.])
+        array([1., 0., 0.])
         >>> perpendicular2
-        array([-1., 0., 0.])
+        array([0., 1., 0.])
 
     """
     if plane.shape != (4,):
@@ -402,10 +463,10 @@ def get_two_perpendicular_unit_vectors_in_plane(plane: np.ndarray) -> Tuple[np.n
     # Step 2: Calculate the first perpendicular vector
     if np.isclose(normal[0], 0) and np.isclose(normal[1], 0):
         # If the normal vector points along the z-axis, choose x-axis for perpendicular1
-        perpendicular1 = np.array([1, 0, 0])
+        perpendicular1 = np.array([1.0, 0.0, 0.0])
     else:
         # Otherwise, construct a perpendicular vector in the x-y plane
-        perpendicular1 = np.array([normal[1], -normal[0], 0])
+        perpendicular1 = np.array([normal[1], -normal[0], 0.0], dtype=float)
 
     # Step 3: Calculate the second perpendicular vector using the cross product
     perpendicular2 = np.cross(normal, perpendicular1)
@@ -437,19 +498,26 @@ def get_best_plane_from_points_from_two_segments(segment_1: np.ndarray, segment_
 
     :Example:
 
-    ::
+    .. literalinclude:: ../../rsaitehu_geometry/examples/example_get_best_plane_from_points_from_two_segments.py
+       :language: python
+       :linenos:
+       :caption: Interactive Example from example_get_best_plane_from_points_from_two_segments.py
 
+    Automated test:
+
+    .. doctest::
+
+        >>> import rsaitehu_geometry as geom
         >>> import numpy as np
         >>> segment_1 = np.array([[0, 0, 0], [1, 0, 0]])
         >>> segment_2 = np.array([[0, 1, 0], [1, 1, 0]])
-        >>> get_best_plane_from_points_from_two_segments(segment_1, segment_2)
+        >>> geom.get_best_plane_from_points_from_two_segments(segment_1, segment_2)
         (array([ 0.,  0.,  1., -0.]), 0.0)
-
+        >>>
         >>> segment_1 = np.array([[1, 2, 3], [4, 5, 6]])
         >>> segment_2 = np.array([[7, 8, 9], [10, 11, 12]])
-        >>> get_best_plane_from_points_from_two_segments(segment_1, segment_2)
-        (array([ 0.81649658, -0.40824829, -0.40824829,  1.22474487]),
-         1.0107280348144214e-29)
+        >>> geom.get_best_plane_from_points_from_two_segments(segment_1, segment_2)
+        (array([ 0.81649658, -0.40824829, -0.40824829,  1.22474487]), 1.0107280348144214e-29)
     """
     if segment_1.shape != (2, 3) or segment_2.shape != (2, 3):
         raise ValueError("Both segments must be numpy arrays of shape (2, 3), representing two 3D points each.")
@@ -485,17 +553,25 @@ def get_a_polygon_from_plane_equation_and_point(plane: np.ndarray, point: np.nda
 
     :Example:
 
-    ::
+    .. literalinclude:: ../../rsaitehu_geometry/examples/example_get_a_polygon_from_plane_equation_and_point.py
+       :language: python
+       :linenos:
+       :caption: Interactive Example from example_get_a_polygon_from_plane_equation_and_point.py
 
+    Automated test:
+
+    .. doctest::
+
+        >>> import rsaitehu_geometry as geom
         >>> import numpy as np
         >>> plane = np.array([0, 0, 1, -3])  # Plane: z = 3
         >>> point = np.array([1, 1, 1])
-        >>> polygon = get_a_polygon_from_plane_equation_and_point(plane, point)
+        >>> polygon = geom.get_a_polygon_from_plane_equation_and_point(plane, point)
         >>> polygon
-        array([[ 1.,  2.,  3.],
-               [ 1.,  0.,  3.],
-               [ 0.,  0.,  3.],
-               [ 0.,  2.,  3.]])
+        array([[2., 2., 3.],
+               [0., 2., 3.],
+               [0., 0., 3.],
+               [2., 0., 3.]])
     """
     if plane.shape != (4,):
         raise ValueError("Plane must be a numpy array with shape (4,), representing [A, B, C, D].")
@@ -550,14 +626,21 @@ def get_limits_of_graph_from_limits_of_object(
 
     :Example:
 
-    ::
+    .. literalinclude:: ../../rsaitehu_geometry/examples/example_get_limits_of_graph_from_limits_of_object.py
+       :language: python
+       :linenos:
+       :caption: Interactive Example from example_get_limits_of_graph_from_limits_of_object.py
 
+    Automated test:
+
+    .. doctest::
+
+        >>> import rsaitehu_geometry as geom
         >>> # 2D Example
-        >>> get_limits_of_graph_from_limits_of_object(-5, 10, -3, 8)
+        >>> geom.get_limits_of_graph_from_limits_of_object(-5, 10, -3, 8)
         (-10.0, 10.0, -10.0, 10.0)
-
         >>> # 3D Example
-        >>> get_limits_of_graph_from_limits_of_object(-5, 10, -3, 8, -7, 15)
+        >>> geom.get_limits_of_graph_from_limits_of_object(-5, 10, -3, 8, -7, 15)
         (-15.0, 15.0, -15.0, 15.0, -15.0, 15.0)
     """
     if (min_z is None) != (max_z is None):
@@ -565,10 +648,10 @@ def get_limits_of_graph_from_limits_of_object(
 
     # Determine the maximum absolute limit
     if min_z is not None and max_z is not None:  # 3D case
-        limit = max(abs(min_x), abs(max_x), abs(min_y), abs(max_y), abs(min_z), abs(max_z))
+        limit = float(max(abs(min_x), abs(max_x), abs(min_y), abs(max_y), abs(min_z), abs(max_z)))
         return -limit, limit, -limit, limit, -limit, limit
     else:  # 2D case
-        limit = max(abs(min_x), abs(max_x), abs(min_y), abs(max_y))
+        limit = float(max(abs(min_x), abs(max_x), abs(min_y), abs(max_y)))
         return -limit, limit, -limit, limit
 
 def get_parallelogram_vertices(center: List[float], normals: List[List[float]], lengths: List[float]) -> List[List[float]]:
@@ -590,13 +673,21 @@ def get_parallelogram_vertices(center: List[float], normals: List[List[float]], 
 
     :Example:
 
-    ::
+    .. literalinclude:: ../../rsaitehu_geometry/examples/example_get_parallelogram_vertices.py
+       :language: python
+       :linenos:
+       :caption: Interactive Example from example_get_parallelogram_vertices.py
 
+    Automated test:
+
+    .. doctest::
+
+        >>> import rsaitehu_geometry as geom
         >>> center = [0, 0, 0]
         >>> normal1 = [1, 0, 0]
         >>> normal2 = [0, 1, 0]
         >>> lengths = [2, 4]
-        >>> get_parallelogram_vertices(center, [normal1, normal2], lengths)
+        >>> geom.get_parallelogram_vertices(center, [normal1, normal2], lengths)
         [[1.0, 2.0, 0.0], [-1.0, 2.0, 0.0], [-1.0, -2.0, 0.0], [1.0, -2.0, 0.0]]
     """
     if len(normals) != 2 or len(lengths) != 2:
@@ -634,16 +725,23 @@ def get_parallelepiped_vertices(center: List[float], normals: List[List[float]],
 
     :Example:
 
-    ::
+    .. literalinclude:: ../../rsaitehu_geometry/examples/example_get_parallelepiped_vertices.py
+       :language: python
+       :linenos:
+       :caption: Interactive Example from example_get_parallelepiped_vertices.py
 
+    Automated test:
+
+    .. doctest::
+
+        >>> import rsaitehu_geometry as geom
         >>> center = [0, 0, 0]
         >>> normal1 = [1, 0, 0]
         >>> normal2 = [0, 1, 0]
         >>> normal3 = [0, 0, 1]
         >>> lengths = [2, 2, 2]
-        >>> get_parallelepiped_vertices(center, [normal1, normal2, normal3], lengths)
-        [[1.0, 1.0, 1.0], [-1.0, 1.0, 1.0], [-1.0, -1.0, 1.0], [1.0, -1.0, 1.0],
-         [1.0, 1.0, -1.0], [-1.0, 1.0, -1.0], [-1.0, -1.0, -1.0], [1.0, -1.0, -1.0]]
+        >>> geom.get_parallelepiped_vertices(center, [normal1, normal2, normal3], lengths)
+        [[1.0, 1.0, 1.0], [-1.0, 1.0, 1.0], [-1.0, -1.0, 1.0], [1.0, -1.0, 1.0], [1.0, 1.0, -1.0], [-1.0, 1.0, -1.0], [-1.0, -1.0, -1.0], [1.0, -1.0, -1.0]]
     """
     if len(normals) != 3 or len(lengths) != 3:
         raise ValueError("Three normal vectors and three lengths are required.")
@@ -688,13 +786,21 @@ def get_intersection_points_of_line_with_cube(line: np.ndarray, cube_min: np.nda
 
     :Example:
 
-    ::
+    .. literalinclude:: ../../rsaitehu_geometry/examples/example_get_intersection_points_of_line_with_cube.py
+       :language: python
+       :linenos:
+       :caption: Interactive Example from example_get_intersection_points_of_line_with_cube.py
 
+    Automated test:
+
+    .. doctest::
+
+        >>> import rsaitehu_geometry as geom
         >>> import numpy as np
         >>> line = np.array([[0, 0, 0], [1, 1, 1]])
         >>> cube_min = np.array([-2, -2, -1])
         >>> cube_max = np.array([1, 2, 2])
-        >>> intersection_points = get_intersection_points_of_line_with_cube(line, cube_min, cube_max)
+        >>> intersection_points = geom.get_intersection_points_of_line_with_cube(line, cube_min, cube_max)
         >>> intersection_points
         array([[ 1.,  1.,  1.],
                [-1., -1., -1.]])
@@ -747,10 +853,18 @@ def get_angle_between_vectors(v1: List[float], v2: List[float]) -> float:
 
     :Example:
 
-    ::
+    .. literalinclude:: ../../rsaitehu_geometry/examples/example_get_angle_between_vectors.py
+       :language: python
+       :linenos:
+       :caption: Interactive Example from example_get_angle_between_vectors.py
 
-        >>> get_angle_between_vectors([1, 0, 0], [0, 1, 0])
-        1.5707963267948966  # 90 degrees in radians
+    Automated test:
+
+    .. doctest::
+
+        >>> import rsaitehu_geometry as geom
+        >>> geom.get_angle_between_vectors([1, 0, 0], [0, 1, 0])
+        1.5707963267948966
     """
     v1 = np.array(v1, dtype=float)
     v2 = np.array(v2, dtype=float)
@@ -783,12 +897,21 @@ def get_angle_between_lines(l1: np.ndarray, l2: np.ndarray) -> float:
 
     :Example:
 
-    ::
+    .. literalinclude:: ../../rsaitehu_geometry/examples/example_get_angle_between_lines.py
+       :language: python
+       :linenos:
+       :caption: Interactive Example from example_get_angle_between_lines.py
 
+    Automated test:
+
+    .. doctest::
+
+        >>> import rsaitehu_geometry as geom
+        >>> import numpy as np
         >>> l1 = np.array([[0, 0, 0], [1, 1, 1]])
         >>> l2 = np.array([[0, 0, 0], [-1, -1, -1]])
-        >>> get_angle_between_lines(l1, l2)
-        3.141592653589793  # 180 degrees in radians
+        >>> geom.get_angle_between_lines(l1, l2)
+        3.141592653589793
     """
     if l1.shape != (2, 3) or l2.shape != (2, 3):
         raise ValueError("Each line must be defined by two points with shape (2, 3).")
@@ -803,7 +926,9 @@ def get_angle_between_lines(l1: np.ndarray, l2: np.ndarray) -> float:
         raise ValueError("Lines must have non-zero direction vectors.")
 
     dot_product = np.dot(v1, v2)
-    angle = np.arccos(dot_product / (norm_v1 * norm_v2))
+    cos_angle = dot_product / (norm_v1 * norm_v2)
+    cos_angle = np.clip(cos_angle, -1, 1)
+    angle = np.arccos(cos_angle)
     return angle
 
 def get_centroid_of_points(points: np.ndarray) -> np.ndarray:
@@ -821,11 +946,19 @@ def get_centroid_of_points(points: np.ndarray) -> np.ndarray:
 
     :Example:
 
-    ::
+    .. literalinclude:: ../../rsaitehu_geometry/examples/example_get_centroid_of_points.py
+       :language: python
+       :linenos:
+       :caption: Interactive Example from example_get_centroid_of_points.py
 
+    Automated test:
+
+    .. doctest::
+
+        >>> import rsaitehu_geometry as geom
         >>> import numpy as np
         >>> points = np.array([[0, 0, 0], [1, 0, 0], [0, 1, 0]])
-        >>> get_centroid_of_points(points)
+        >>> geom.get_centroid_of_points(points)
         array([0.33333333, 0.33333333, 0.        ])
     """
     if points.ndim != 2:
@@ -855,14 +988,22 @@ def get_angle_between_planes(plane1: np.ndarray, plane2: np.ndarray) -> float:
 
     :Example:
 
-    ::
+    .. literalinclude:: ../../rsaitehu_geometry/examples/example_get_angle_between_planes.py
+       :language: python
+       :linenos:
+       :caption: Interactive Example from example_get_angle_between_planes.py
 
+    Automated test:
+
+    .. doctest::
+
+        >>> import rsaitehu_geometry as geom
         >>> import numpy as np
         >>> plane1 = np.array([0, 0, 1, -3])  # Plane: z = 3
         >>> plane2 = np.array([0, 1, 1, -4])  # Some inclined plane
-        >>> angle = get_angle_between_planes(plane1, plane2)
+        >>> angle = geom.get_angle_between_planes(plane1, plane2)
         >>> angle
-        0.7853981633974483  # Approximately 45 degrees in radians
+        0.7853981633974484
     """
     if plane1.shape != (4,):
         raise ValueError("plane1 must be a numpy array with shape (4,), representing [A, B, C, D].")

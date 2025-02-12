@@ -23,9 +23,8 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.napoleon',  # For Google or NumPy docstrings
     "sphinx_rtd_theme",
-    #'sphinx.ext.viewcode',
-    'sphinx.ext.autosummary',
-    #'sphinx.ext.todo', 'sphinx.ext.viewcode', 'sphinx.ext.autodoc', 'sphinx.ext.imgmath', 'sphinx_automodapi.automodapi', 'sphinx.ext.ifconfig'
+    'sphinx.ext.doctest',
+    'sphinx.ext.autosummary'
 ]
 
 templates_path = ['_templates']
