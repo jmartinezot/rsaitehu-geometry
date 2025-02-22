@@ -352,6 +352,50 @@ def fit_plane_svd(points: np.ndarray) -> Tuple[float, float, float, float, float
 
     return normal[0], normal[1], normal[2], d, sse
 
+def fit_plane_4points(points: np.ndarray) -> Tuple[float, float, float, float, float]:
+    """
+    Fit a plane to exactly 4 points using the covariance matrix and eigen-decomposition.
+    
+    The plane is defined as Ax + By + Cz + D = 0 and the returned tuple is:
+    (A, B, C, D, SSE)
+    
+    :param points: A numpy array of shape (4, 3) containing the four points.
+    :return: A tuple containing:
+             - A, B, C (float): Components of the plane normal.
+             - D (float): Offset from the origin.
+             - SSE (float): Sum of squared errors.
+    :raises ValueError: If the input array does not have shape (4, 3).
+    """
+    if points.shape != (4, 3):
+        raise ValueError("Input points must have shape (4, 3).")
+
+    # Step 1: Compute the centroid of the points.
+    centroid = np.mean(points, axis=0)
+
+    # Step 2: Center the points.
+    shifted_points = points - centroid
+
+    # Step 3: Compute the 3x3 covariance matrix.
+    # Since there are only 4 points, this is a small matrix.
+    cov = shifted_points.T @ shifted_points
+
+    # Step 4: Compute eigenvalues and eigenvectors of the covariance matrix.
+    # np.linalg.eigh is optimized for symmetric matrices.
+    eigenvalues, eigenvectors = np.linalg.eigh(cov)
+
+    # Step 5: The normal vector corresponds to the smallest eigenvalue.
+    normal = eigenvectors[:, np.argmin(eigenvalues)]
+
+    # Step 6: Compute the plane's offset D.
+    d = -np.dot(normal, centroid)
+
+    # Step 7: Compute the sum of squared errors.
+    errors = np.dot(points, normal) + d
+    sse = np.sum(errors ** 2)
+
+    return normal[0], normal[1], normal[2], d, sse
+
+
 def get_intersection_point_of_line_with_plane(line: np.ndarray, plane: np.ndarray) -> Optional[np.ndarray]:
     '''
     Calculate the intersection point of a line with a plane in 3D space.
@@ -526,7 +570,7 @@ def get_best_plane_from_points_from_two_segments(segment_1: np.ndarray, segment_
     points = np.array([segment_1[0], segment_1[1], segment_2[0], segment_2[1]])
 
     # Fit the best plane to the points using SVD
-    a, b, c, d, sse = fit_plane_svd(points)
+    a, b, c, d, sse = fit_plane_4points(points)
 
     # Construct the plane equation
     best_plane = np.array([a, b, c, d])
